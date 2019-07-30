@@ -5,6 +5,8 @@ Date        30.07.2019
 
 import redpitaya_scpi as scpi
 
+MODES = ["DISABLED", "NOW", "CH1_PE", "CH1_NE", "CH2_PE", "CH2_NE", "EXT_PE", "EXT_NE", "AWG_PE", "AWG_NE"]
+
 
 def set_trigger_level(rp_s: scpi.scpi, level: float):
     """
@@ -33,3 +35,16 @@ def wait_for_trigd(rp_s: scpi.scpi):
         rp_s.tx_txt(f"ACQ:TRIG:STAT?")
         if rp_s.rx_txt() == "TD":
             break
+
+
+def set_trigger_mode(rp_s: scpi.scpi, mode: str):
+    """
+    Sets the trigger mode
+    :param rp_s: scpi connection object to RedPitaya
+    :param mode: Trigger mode one of [DISABLED, NOW, CH1_PE, CH1_NE, CH2_PE, CH2_NE, EXT_PE, EXT_NE, AWG_PE, AWG_NE]
+    """
+    # Check input
+    if mode not in MODES:
+        raise AttributeError(f"Your specified mode ({mode}) is not in the list of possible modes ({MODES})!")
+
+    rp_s.tx_txt(f"ACQ:TRIG {mode}")
