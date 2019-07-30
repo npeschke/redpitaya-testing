@@ -6,6 +6,15 @@ Date        30.07.2019
 import redpitaya_scpi as scpi
 
 
+def set_trigger_level(rp_s: scpi.scpi, level: float):
+    """
+    Set trigger level in mV
+    :param rp_s: scpi connection object to RedPitaya
+    :param level: Trigger level in mV
+    """
+    rp_s.tx_txt(f"ACQ:TRIG:LEV {level}")
+
+
 def wait_for_trigd(rp_s: scpi.scpi):
     """
     Waits until RedPitaya reports trig'd
