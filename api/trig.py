@@ -15,6 +15,15 @@ def set_trigger_level(rp_s: scpi.scpi, level: float):
     rp_s.tx_txt(f"ACQ:TRIG:LEV {level}")
 
 
+def set_trigger_delay(rp_s: scpi.scpi, delay: float):
+    """
+    Set trigger delay in ns
+    :param rp_s: scpi connection object to RedPitaya
+    :param delay: Trigger delay in ns
+    """
+    rp_s.tx_txt(f"ACQ:TRIG:DLY {delay}")
+
+
 def wait_for_trigd(rp_s: scpi.scpi):
     """
     Waits until RedPitaya reports trig'd
