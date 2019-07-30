@@ -9,7 +9,7 @@ import redpitaya_scpi as scpi
 def wait_for_trigd(rp_s: scpi.scpi):
     """
     Waits until RedPitaya reports trig'd
-    :param rp_s: scpi connection to RedPitaya
+    :param rp_s: scpi connection object to RedPitaya
     """
     while True:
         rp_s.tx_txt(f"ACQ:TRIG:STAT?")
