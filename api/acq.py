@@ -8,6 +8,14 @@ import redpitaya_scpi as scpi
 DECIMATIONS = [1, 8, 64, 1024, 8192, 65535]
 
 
+def start_acquisition(rp_s: scpi.scpi):
+    """
+    Starts the acquisition
+    :param rp_s: scpi connection object to RedPitaya
+    """
+    rp_s.tx_txt("ACQ:START")
+
+
 def reset_acquisition(rp_s: scpi.scpi):
     """
     Resets oscilloscope
