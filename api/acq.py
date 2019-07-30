@@ -3,7 +3,10 @@ Author      Nicolas Peschke
 Date        30.07.2019
 """
 
+import numpy as np
+
 import redpitaya_scpi as scpi
+
 import api.misc as misc
 
 DECIMATIONS = [1, 8, 64, 1024, 8192, 65535]
@@ -52,3 +55,20 @@ def set_channel_gain(rp_s: scpi.scpi, channel: int, gain: str):
 
     rp_s.tx_txt(f"ACQ:SOUR{channel}:GAIN {gain}")
 
+
+def get_channel_data(rp_s: scpi.scpi, channel: int):
+    """
+    Retrieves data from selected channel
+    :param rp_s: scpi connection object to RedPitaya
+    :param channel: Channel, either 1 or 2
+    :return: Numpy array containing the data
+    """
+    # Check input
+    misc.check_input(channel, CHANNELS, "channel")
+
+    rp_s.tx_txt(f"ACQ:SOUR{channel}:DATA?")
+    buff_string = rp_s.rx_txt()
+
+    acq_data = np.genfromtxt(buff_string.strip('{}\n\r').replace("  ", "").split(','))
+
+    return acq_data
