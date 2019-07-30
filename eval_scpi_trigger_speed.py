@@ -9,7 +9,6 @@ import argparse
 import numpy as np
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 
 def eval_scpi_slow_out_trigger_speed(rp_ip: str):
@@ -124,4 +123,3 @@ if __name__ == '__main__':
 
     # eval_scpi_fast_out_trigger_speed(rp_ip=arguments.IP)
     eval_scpi_slow_out_trigger_speed(rp_ip=arguments.IP)
-
