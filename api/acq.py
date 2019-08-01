@@ -3,6 +3,7 @@ Author      Nicolas Peschke
 Date        30.07.2019
 """
 
+import pandas as pd
 import numpy as np
 
 import redpitaya_scpi as scpi
@@ -61,14 +62,17 @@ def get_channel_data(rp_s: scpi.scpi, channel: int):
     Retrieves data from selected channel
     :param rp_s: scpi connection object to RedPitaya
     :param channel: Channel, either 1 or 2
-    :return: Numpy array containing the data
+    :return: Pandas DataFrame containing the data
     """
     # Check input
     misc.check_input(channel, CHANNELS, "channel")
 
     rp_s.tx_txt(f"ACQ:SOUR{channel}:DATA?")
     buff_string = rp_s.rx_txt()
+    buff = pd.Series(buff_string.strip('{}\n\r').replace("  ", "").split(','), dtype="float64")
+    channel = pd.Series(np.repeat(channel, len(buff)), dtype="category")
+    sample = pd.Series(range(len(buff)), dtype="int")
 
-    acq_data = np.genfromtxt(buff_string.strip('{}\n\r').replace("  ", "").split(','))
+    acq_data = pd.DataFrame({"voltage": buff, "channel": channel, "sample": sample})
 
     return acq_data
