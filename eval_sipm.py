@@ -56,19 +56,15 @@ def eval_sipm(rp_s: scpi.scpi, num: int):
 def pulse_sipm(rp_s: scpi.scpi):
     # Setup acquisition
     acq.reset_acquisition(rp_s)
-    acq.set_decimation(rp_s, 64)
-    trig.set_trigger_level(rp_s, 0)
-    trig.set_trigger_delay(rp_s, 0)
+    acq.set_decimation(rp_s, 1)
+    trig.set_trigger_level(rp_s, 500)
+    trig.set_trigger_delay(rp_s, 17000)
     acq.set_channel_gain(rp_s, 1, "HV")
     acq.set_channel_gain(rp_s, 2, "HV")
-
     acq.start_acquisition(rp_s)
-
-    trig.set_trigger_mode(rp_s, "CH2_PE")
-
-    gen.pulse_slow_analog_out(rp_s, aout=0, voltage=1.8, duration=1)
+    trig.set_trigger_mode(rp_s, "NOW")
+    gen.pulse_slow_analog_out(rp_s, aout=0, voltage=1.8, duration=0)
     trig.wait_for_trigd(rp_s)
-
     data_ch1 = acq.get_channel_data(rp_s, 1)
     data_ch2 = acq.get_channel_data(rp_s, 2)
 
